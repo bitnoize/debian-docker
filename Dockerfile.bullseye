@@ -1,0 +1,30 @@
+
+FROM debian:bullseye
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN set -eux; \
+    # Debian APT
+    echo "APT::Install-Recommends \"false\";" >> /etc/apt/apt.conf.d/docker-norecommends; \
+    echo "APT::Install-Suggests \"false\";"   >> /etc/apt/apt.conf.d/docker-norecommends; \
+    echo "Package: *"                         >> /etc/apt/preferences.d/10backports; \
+    echo "Pin: release n=bullseye-backports"  >> /etc/apt/preferences.d/10backports; \
+    echo "Pin-Priority: 600"                  >> /etc/apt/preferences.d/10backports; \
+    echo "deb http://deb.debian.org/debian/ bullseye-backports main" > \
+        /etc/apt/sources.list.d/backports.list; \
+    # Packages
+    apt-get update -q; \
+    apt-get full-upgrade -yq; \
+    apt-get install -yq \
+        procps less locales wget ca-certificates gnupg; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    # Locales
+    sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
+    locale-gen
+
+ENV TZ=UTC LANG=en_US.UTF-8
+
+CMD ["/bin/bash"]
+
