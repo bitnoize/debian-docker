@@ -16,15 +16,16 @@ RUN set -eux; \
     apt-get update -q; \
     apt-get full-upgrade -yq; \
     apt-get install -yq \
-        procps less locales wget ca-certificates gnupg; \
+        procps net-tools less locales wget ca-certificates gnupg; \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
     # Locales
     sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
+    sed -i "/ru_RU.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen
 
 ENV TZ=UTC LANG=en_US.UTF-8
 
-CMD ["/bin/bash"]
+CMD ["bash"]
 
