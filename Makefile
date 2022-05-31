@@ -1,12 +1,12 @@
 
 IMAGENAME="bitnoize/debian-backports"
 
-.PHONY: help build push test
+.PHONY: help build push shell
 
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Makefile commands: build push test"
+	@echo "Makefile commands: build push shell"
 
 build: .build-bullseye
 
@@ -23,8 +23,9 @@ push: .push-bullseye
 	docker push "$(IMAGENAME):latest"
 	docker push "$(IMAGENAME):bullseye"
 
-test:
+shell:
 	docker run -it --rm \
-		--name test-debian-backports \
-		bitnoize/debian-backports:latest
+		--name debian-backports-shell \
+		bitnoize/debian-backports:latest \
+		/bin/bash
 
