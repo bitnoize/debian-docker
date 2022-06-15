@@ -26,6 +26,5 @@ push: .push-bullseye
 shell:
 	docker run -it --rm \
 		--name debian-backports-shell \
-		bitnoize/debian-backports:latest \
-		/bin/bash
+		bitnoize/debian-backports:latest
 
