@@ -1,36 +1,29 @@
 
-IMAGENAME="bitnoize/debian-backports"
+IMAGENAME := bitnoize/debian
 
-.PHONY: help build push pull shell
+.PHONY: help build rebuild
 
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Makefile commands: build push pull shell"
+	@echo "Makefile commands: build rebuild"
 
-build: .build-bullseye
+#build: export BUILD_OPTS := ...
+#build: export PUSH_OPTS := ...
+build: .build-bullseye .push-bullseye
+
+rebuild: export BUILD_OPTS := --pull --no-cache
+#rebuild: export PUSH_OPTS := ...
+rebuild: .build-bullseye .push-bullseye
 
 .build-bullseye:
-	docker build --pull --no-cache \
+	docker build $(BUILD_OPTS) \
 		-t "$(IMAGENAME):bullseye" \
 		-t "$(IMAGENAME):latest" \
 		-f Dockerfile.bullseye \
 		.
 
-push: .push-bullseye
-
 .push-bullseye:
-	docker push "$(IMAGENAME):latest"
-	docker push "$(IMAGENAME):bullseye"
-
-pull: .pull-bullseye
-
-.pull-bullseye:
-	docker pull "$(IMAGENAME):latest"
-	docker pull "$(IMAGENAME):bullseye"
-
-shell:
-	docker run -it --rm \
-		--name debian-backports-shell \
-		bitnoize/debian-backports:latest
+	docker push $(PUSH_OPTS) "$(IMAGENAME):latest"
+	docker push $(PUSH_OPTS) "$(IMAGENAME):bullseye"
 
