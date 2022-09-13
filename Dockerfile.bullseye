@@ -4,15 +4,6 @@ FROM debian:bullseye
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
-    # Fake user
-    groupadd -g 1000 dummy; \
-    useradd -M -d /home/dummy -s /bin/bash -g 1000 -u 1000 dummy; \
-    usermod -a -G staff dummy; \
-    mkdir -p /home/dummy; \
-    chown dummy:dummy /home/dummy; \
-    chmod 750 /home/dummy
-
-RUN set -eux; \
     # Debian APT
     echo "APT::Install-Recommends \"false\";" >> /etc/apt/apt.conf.d/docker-norecommends; \
     echo "APT::Install-Suggests \"false\";"   >> /etc/apt/apt.conf.d/docker-norecommends; \
@@ -25,17 +16,15 @@ RUN set -eux; \
     apt-get update -q; \
     apt-get full-upgrade -yq; \
     apt-get install -yq \
-        gosu procps net-tools less locales wget ca-certificates gnupg; \
+        gosu procps less locales wget ca-certificates gnupg; \
     # Locales
     sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
     sed -i "/ru_RU.UTF-8/s/^# //g" /etc/locale.gen; \
     sed -i "/uk_UA.UTF-8/s/^# //g" /etc/locale.gen; \
+    sed -i "/be_BY.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen; \
     # Clean-up
     rm -rf /var/lib/apt/lists/*
-
-COPY docker-entrypoint.sh /sbin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
 
 ENV TZ=UTC LANG=en_US.UTF-8
 
