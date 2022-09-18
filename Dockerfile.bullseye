@@ -1,5 +1,5 @@
 
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -24,6 +24,9 @@ RUN set -eux; \
     sed -i "/be_BY.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen; \
     # Clean-up
+    rm -rf /usr/share/doc/*;  \
+    rm -rf /usr/share/info/*; \
+    rm -rf /usr/share/man/*;  \
     rm -rf /var/lib/apt/lists/*
 
 ENV TZ=UTC LANG=en_US.UTF-8
