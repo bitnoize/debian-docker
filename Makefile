@@ -1,5 +1,5 @@
 
-IMAGENAME := bitnoize/debian
+IMAGENAME := ghcr.io/bitnoize/debian
 
 .PHONY: help build rebuild push pull
 

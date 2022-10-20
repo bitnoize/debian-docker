@@ -5,13 +5,18 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
     # Debian APT
-    echo "APT::Install-Recommends \"false\";" >> /etc/apt/apt.conf.d/docker-norecommends; \
-    echo "APT::Install-Suggests \"false\";"   >> /etc/apt/apt.conf.d/docker-norecommends; \
-    echo "Package: *"                         >> /etc/apt/preferences.d/10backports; \
-    echo "Pin: release n=bullseye-backports"  >> /etc/apt/preferences.d/10backports; \
-    echo "Pin-Priority: 600"                  >> /etc/apt/preferences.d/10backports; \
-    echo "deb http://deb.debian.org/debian/ bullseye-backports main" > \
-        /etc/apt/sources.list.d/backports.list; \
+    { \
+        echo "APT::Install-Recommends \"false\";"; \
+        echo "APT::Install-Suggests \"false\";"; \
+    } | tee /etc/apt/apt.conf.d/docker-norecommends; \
+    { \
+        echo "Package: *"; \
+        echo "Pin: release n=bullseye-backports"; \
+        echo "Pin-Priority: 600"; \
+    } | tee /etc/apt/preferences.d/10backports; \
+    { \
+        echo "deb http://deb.debian.org/debian/ bullseye-backports main"; \
+    } | tee /etc/apt/sources.list.d/backports.list; \
     # Packages
     apt-get update -q; \
     apt-get full-upgrade -yq; \
@@ -24,10 +29,12 @@ RUN set -eux; \
     sed -i "/be_BY.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen; \
     # Clean-up
-    rm -rf /usr/share/doc/*;  \
-    rm -rf /usr/share/info/*; \
-    rm -rf /usr/share/man/*;  \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf \
+        /var/www/* \
+        /usr/share/doc/* \
+        /usr/share/info/* \
+        /usr/share/man/* \
+        /var/lib/apt/lists/*
 
 ENV TZ=UTC LANG=en_US.UTF-8
 
