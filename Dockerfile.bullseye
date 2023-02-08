@@ -1,6 +1,8 @@
 
 FROM debian:bullseye-slim
 
+LABEL org.opencontainers.image.source=https://github.com/bitnoize/debian-docker
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
