@@ -23,7 +23,14 @@ RUN set -eux; \
     apt-get update -q; \
     apt-get full-upgrade -yq; \
     apt-get install -yq \
-        gosu procps less locales wget ca-certificates gnupg; \
+        gosu \
+        procps \
+        less \
+        locales \
+        wget \
+        ca-certificates \
+        gnupg \
+        xz-utils; \
     # Locales
     sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
     sed -i "/ru_RU.UTF-8/s/^# //g" /etc/locale.gen; \
