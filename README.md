@@ -1,5 +1,10 @@
 Debian
 ------
 
-Dockerfile for my own projects based on Debian with backports and some other functions enabled.
+Base Debian image for my own Docker projects.
+
+```
+# Run container and execute a shell into it.
+docker run -it --rm --name debian ghcr.io/bitnoize/debian:latest
+```
 
