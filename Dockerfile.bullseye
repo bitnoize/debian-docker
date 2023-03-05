@@ -12,12 +12,16 @@ RUN set -eux; \
         echo "APT::Install-Suggests \"false\";"; \
     } | tee /etc/apt/apt.conf.d/docker-norecommends; \
     { \
+        echo "deb http://deb.debian.org/debian bullseye main contrib non-free"; \
+        echo "deb http://deb.debian.org/debian bullseye-updates main contrib non-free"; \
+    } | tee /etc/apt/sources.list; \
+    { \
         echo "Package: *"; \
         echo "Pin: release n=bullseye-backports"; \
         echo "Pin-Priority: 600"; \
     } | tee /etc/apt/preferences.d/10backports; \
     { \
-        echo "deb http://deb.debian.org/debian/ bullseye-backports main"; \
+        echo "deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free"; \
     } | tee /etc/apt/sources.list.d/backports.list; \
     # Packages
     apt-get update -q; \
