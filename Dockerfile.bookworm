@@ -1,5 +1,5 @@
 
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 LABEL org.opencontainers.image.source=https://github.com/bitnoize/debian-docker
 
@@ -12,17 +12,17 @@ RUN set -eux; \
         echo "APT::Install-Suggests \"false\";"; \
     } | tee /etc/apt/apt.conf.d/docker-norecommends; \
     { \
-        echo "deb http://deb.debian.org/debian bullseye main contrib non-free"; \
-        echo "deb http://security.debian.org/debian-security bullseye-security main contrib non-free"; \
-        echo "deb http://deb.debian.org/debian bullseye-updates main contrib non-free"; \
+        echo "deb http://deb.debian.org/debian bookworm main contrib non-free"; \
+        echo "deb http://security.debian.org/debian-security bookworm-security main contrib non-free"; \
+        echo "deb http://deb.debian.org/debian bookworm-updates main contrib non-free"; \
     } | tee /etc/apt/sources.list; \
     { \
         echo "Package: *"; \
-        echo "Pin: release n=bullseye-backports"; \
+        echo "Pin: release n=bookworm-backports"; \
         echo "Pin-Priority: 600"; \
     } | tee /etc/apt/preferences.d/10backports; \
     { \
-        echo "deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free"; \
+        echo "deb http://deb.debian.org/debian/ bookworm-backports main contrib non-free"; \
     } | tee /etc/apt/sources.list.d/backports.list; \
     # Packages
     apt-get update -q; \
@@ -38,8 +38,6 @@ RUN set -eux; \
     # Locales
     sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
     sed -i "/ru_RU.UTF-8/s/^# //g" /etc/locale.gen; \
-    sed -i "/uk_UA.UTF-8/s/^# //g" /etc/locale.gen; \
-    sed -i "/be_BY.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen; \
     # Clean-up
     rm -rf \

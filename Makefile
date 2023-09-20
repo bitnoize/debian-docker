@@ -9,29 +9,29 @@ help:
 	@echo "Makefile commands: build rebuild push pull"
 
 #build: export BUILD_OPTS := ...
-build: .build-bullseye
+build: .build-bookworm
 
 rebuild: export BUILD_OPTS := --pull --no-cache
-rebuild: .build-bullseye
+rebuild: .build-bookworm
 
-.build-bullseye:
+.build-bookworm:
 	docker build $(BUILD_OPTS) \
-		-t "$(IMAGENAME):bullseye" \
+		-t "$(IMAGENAME):bookworm" \
 		-t "$(IMAGENAME):latest" \
-		-f Dockerfile.bullseye \
+		-f Dockerfile.bookworm \
 		.
 
 #push: export PUSH_OPTS := ...
-push: .push-bullseye
+push: .push-bookworm
 
-.push-bullseye:
+.push-bookworm:
 	docker push $(PUSH_OPTS) "$(IMAGENAME):latest"
-	docker push $(PUSH_OPTS) "$(IMAGENAME):bullseye"
+	docker push $(PUSH_OPTS) "$(IMAGENAME):bookworm"
 
 #pull: export PULL_OPTS := ...
-pull: .pull-bullseye
+pull: .pull-bookworm
 
-.pull-bullseye:
+.pull-bookworm:
 	docker pull $(PULL_OPTS) "$(IMAGENAME):latest"
-	docker pull $(PULL_OPTS) "$(IMAGENAME):bullseye"
+	docker pull $(PULL_OPTS) "$(IMAGENAME):bookworm"
 
