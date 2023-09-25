@@ -39,6 +39,8 @@ RUN set -eux; \
     sed -i "/en_US.UTF-8/s/^# //g" /etc/locale.gen; \
     sed -i "/ru_RU.UTF-8/s/^# //g" /etc/locale.gen; \
     locale-gen; \
+    # Fix apt-sources
+    rm -f /etc/apt/sources.list.d/debian.sources; \
     # Clean-up
     rm -rf \
         /var/www/* \
